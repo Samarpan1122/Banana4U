@@ -374,36 +374,6 @@ const App: React.FC = () => {
                 isLoading={isLoading}
                 voiceError={voiceError}
               />
-              {voiceError && (
-                <div className="mb-2 px-2 text-center text-xs text-red-500">
-                  {voiceError}
-                </div>
-              )}
-              <div className="mx-auto max-w-2xl space-y-3">
-                {messages.map((message) => (
-                  <ChatBubble key={message.id} message={message} />
-                ))}
-                {isLoading && (
-                  <div className="mb-2 flex justify-end">
-                    <div className="glass-bubble rounded-2xl rounded-br-sm px-4 py-2">
-                      <div className="flex gap-1">
-                        <div
-                          className="h-2 w-2 animate-bounce rounded-full bg-white"
-                          style={{ animationDelay: "0ms" }}
-                        />
-                        <div
-                          className="h-2 w-2 animate-bounce rounded-full bg-white"
-                          style={{ animationDelay: "150ms" }}
-                        />
-                        <div
-                          className="h-2 w-2 animate-bounce rounded-full bg-white"
-                          style={{ animationDelay: "300ms" }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
 
             {/* Chat Input at bottom - Positioned absolutely to not interfere with chat area scroll height */}
