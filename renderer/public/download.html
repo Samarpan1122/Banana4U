@@ -82,23 +82,14 @@
     </section>
 
     <section class="features">
-      <h2 class="section-title">A-peel-ing Features</h2>
+      <h2 class="section-title scroll-animate">A-peel-ing Features</h2>
       <div class="feature-grid">
-        <div class="feature-card feature-card-large">
-          <div class="feature-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z" />
-              <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-              <line x1="9" y1="9" x2="9.01" y2="9" />
-              <line x1="15" y1="9" x2="15.01" y2="9" />
-            </svg>
-          </div>
+        <div class="feature-card feature-card-large scroll-animate" data-delay="0">
           <h3>Dynamic Personalities</h3>
           <p>Your AI, your vibe. Switch between modes like Study, Hype, or Code to get tailored responses and a banana
             that matches your mood. The ultimate customizable companion.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card scroll-animate" data-delay="100">
           <div class="feature-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -110,7 +101,7 @@
           <p>More than just words. Capture your screen and ask questions about anything you see, from code errors to
             complex diagrams. It's like having an expert by your side.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card scroll-animate" data-delay="200">
           <div class="feature-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -124,7 +115,7 @@
           <p>From quick queries with push-to-talk to full hands-free conversations, your voice is the ultimate shortcut.
           </p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card scroll-animate" data-delay="0">
           <div class="feature-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -136,47 +127,63 @@
           <p>Boost your focus with a built-in Pomodoro timer, quick actions, and smart reminders to keep you on track.
           </p>
         </div>
+        <div class="feature-card scroll-animate" data-delay="100">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z" />
+              <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+              <line x1="9" y1="9" x2="9.01" y2="9" />
+              <line x1="15" y1="9" x2="15.01" y2="9" />
+            </svg>
+          </div>
+          <h3>Dynamic Personalities</h3>
+          <p>Your AI, your vibe. Switch between modes like Study, Hype, or Code to get tailored responses.</p>
+        </div>
       </div>
     </section>
 
     <section class="personalities">
-      <h2 class="section-title">Meet the Personalities</h2>
+      <h2 class="section-title scroll-animate">Meet the Personalities</h2>
       <div class="personality-gallery">
-        <div class="personality-card">
+        <div class="personality-card scroll-animate" data-delay="0">
           <img src="../images/coolbanana.png" alt="Default Banana">
           <h4>Default</h4>
         </div>
-        <div class="personality-card">
+        <div class="personality-card scroll-animate" data-delay="100">
           <img src="../images/studybanana.png" alt="Study Banana">
           <h4>Study</h4>
         </div>
-        <div class="personality-card">
+        <div class="personality-card scroll-animate" data-delay="200">
           <img src="../images/hypebanana.png" alt="Hype Banana">
           <h4>Hype</h4>
         </div>
-        <div class="personality-card">
+        <div class="personality-card scroll-animate" data-delay="300">
           <img src="../images/chillbanana.png" alt="Chill Banana">
           <h4>Chill</h4>
         </div>
       </div>
     </section>
 
-    <section class="screenshots">
+    <section class="screenshots scroll-animate">
       <h2 class="section-title">See It In Action</h2>
       <div class="screenshot-gallery">
-        <img src="https://via.placeholder.com/800x500/1a1a1a/ffffff?text=App+Screenshot+1"
-          alt="Screenshot of the Banana4U chat interface" class="screenshot-image">
-        <img src="https://via.placeholder.com/800x500/1a1a1a/ffffff?text=App+Screenshot+2"
+        <button class="carousel-button carousel-prev">&lt;</button>
+        <img src="https://via.placeholder.com/800x500/1a1a1a/ffffff?text=App+Screenshot+1" data-delay="0"
+          alt="Screenshot of the Banana4U chat interface" class="screenshot-image active">
+        <img src="https://via.placeholder.com/800x500/1a1a1a/ffffff?text=App+Screenshot+2" data-delay="100"
           alt="Screenshot of the Banana4U settings panel" class="screenshot-image">
-        <img src="https://via.placeholder.com/800x500/1a1a1a/ffffff?text=App+Screenshot+3"
+        <img src="https://via.placeholder.com/800x500/1a1a1a/ffffff?text=App+Screenshot+3" data-delay="200"
           alt="Screenshot of Banana4U helping with code" class="screenshot-image">
+        <button class="carousel-button carousel-next">&gt;</button>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>Built with 🍌 for CornHacks 2025</p>
+    <p class="scroll-animate">Built with 🍌 for CornHacks 2025</p>
   </footer>
+  <script src="download.js"></script>
 </body>
 
 </html>
