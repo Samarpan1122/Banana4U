@@ -16,6 +16,8 @@
     "build:icons": "electron-icon-builder --input=./images/cool_banana3-removebg-preview.png --output=./build --flatten && cp build/icons/icon.icns build/ && cp build/icons/icon.ico build/ && cp build/icons/512x512.png build/icon.png",
     "package": "npm run build && electron-builder",
     "package:mac": "npm run build && electron-builder --mac",
+    "package:mac:both": "npm run build && electron-builder --mac --x64 --arm64",
+    "package:mac:universal": "npm run build && electron-builder --mac --universal",
     "package:win": "npm run build && electron-builder --win",
     "package:linux": "npm run build && electron-builder --linux",
     "start": "electron .",
@@ -88,8 +90,20 @@
     "mac": {
       "category": "public.app-category.productivity",
       "target": [
-        "dmg",
-        "zip"
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
       ],
       "icon": "build/icon.icns"
     },
