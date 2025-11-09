@@ -404,13 +404,32 @@ footer {
   padding: 4rem 0;
 }
 
+.screenshot-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.screenshot-bg-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 95%;
+  height: 90%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 1.5rem;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
 .screenshot-gallery {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 900px;
-  margin: 0 auto;
+  z-index: 2;
 }
 
 .screenshot-image {
