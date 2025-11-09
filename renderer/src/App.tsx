@@ -16,6 +16,7 @@ const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [personality, setPersonality] = useState<PersonalityType>("default");
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [bananaScale, setBananaScale] = useState(1);
 
   // Hooks
   const {
@@ -75,6 +76,28 @@ const App: React.FC = () => {
       loadPersonality();
     }
   }, [isSettingsOpen]);
+
+  // --- Mascot Scaling with Window Size ---
+  useEffect(() => {
+    const handleResize = () => {
+      // Base size for scaling calculations
+      const baseWidth = 300;
+      const baseHeight = 450;
+
+      const scaleX = window.innerWidth / baseWidth;
+      const scaleY = window.innerHeight / baseHeight;
+
+      // Use the smaller of the two scale factors to maintain aspect ratio
+      const newScale = Math.min(scaleX, scaleY);
+
+      // Clamp the scale to prevent it from becoming too small or excessively large
+      setBananaScale(Math.max(0.5, Math.min(newScale, 2.5)));
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Initial calculation
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Set up speaking callbacks for conversational mode
   useEffect(() => {
@@ -309,7 +332,13 @@ const App: React.FC = () => {
 
           <div className="relative w-full h-full flex flex-col z-10">
             {/* Banana at top center */}
-            <div className="flex-shrink-0 pt-8 pb-4 flex justify-center">
+            <div
+              className="flex-shrink-0 pt-8 pb-4 flex justify-center animate-subtle-scale"
+              style={{
+                transform: `scale(${bananaScale})`,
+                transition: "transform 0.2s ease-out",
+              }}
+            >
               <Banana state={animationState} personality={personality} />
             </div>
 
@@ -321,6 +350,10 @@ const App: React.FC = () => {
                 scrollbarWidth: "thin",
                 minHeight: 0,
                 touchAction: "pan-y",
+                maskImage:
+                  "linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%)",
               }}
             >
               {voiceError && (
