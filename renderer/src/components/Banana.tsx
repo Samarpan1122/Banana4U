@@ -7,6 +7,7 @@ import hypeBananaImage from "../../../images/hypebanana.png";
 import chillBananaImage from "../../../images/chillbanana.png";
 import memeBananaImage from "../../../images/memebanana-removebg-preview.png";
 import talkingBananaSprite from "../../../images/defaultbanana_talking.png";
+import exhaustedBananaSprite from "../../../images/exhuasted_banana.png";
 
 interface BananaProps {
   state: AnimationState;
@@ -24,10 +25,10 @@ const Banana: React.FC<BananaProps> = ({ state, personality = "default" }) => {
   const FRAMES_PER_ROW = 6; // Assuming 6x6 grid
   const SPRITE_SIZE = 200; // Size of each frame in the sprite sheet
 
-  // Animate sprite frames when speaking
+  // Animate sprite frames when speaking or listening (exhausted)
   useEffect(() => {
-    // Always run sprite loop while speaking; otherwise idle first frame
-    if (state !== "speaking") {
+    // Always run sprite loop while speaking or listening; otherwise idle first frame
+    if (state !== "speaking" && state !== "listening") {
       setCurrentFrame(0);
       if (animationFrameRef.current)
         cancelAnimationFrame(animationFrameRef.current);
@@ -173,11 +174,11 @@ const Banana: React.FC<BananaProps> = ({ state, personality = "default" }) => {
       initial="idle"
     >
       {/* Banana Character - changes based on personality or shows sprite when speaking */}
-      {state === "speaking" ? (
+      {state === "speaking" || state === "listening" ? (
         <div
           className="w-48 h-48"
           style={{
-            backgroundImage: `url(${talkingBananaSprite})`,
+            backgroundImage: `url(${state === "speaking" ? talkingBananaSprite : exhaustedBananaSprite})`,
             backgroundSize: `${SPRITE_SIZE * FRAMES_PER_ROW}px ${
               SPRITE_SIZE * FRAMES_PER_ROW
             }px`,
