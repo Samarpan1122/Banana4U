@@ -8,6 +8,21 @@ dist/
 release/
 *.tsbuildinfo
 
+# Release artifacts (installers & packages)
+*.exe
+*.dmg
+*.deb
+*.rpm
+*.AppImage
+*.snap
+*.pkg
+*.msi
+*.zip
+*.tar.gz
+*.blockmap
+*.yml
+!.gitkeep
+
 # Environment variables
 .env
 .env.local
