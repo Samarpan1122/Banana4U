@@ -163,3 +163,7 @@ export const useBananaAI = (): UseBananaAIResult => {
     setPersonality,
   };
 };
+
+// Note: The following code assumes that the server-side proxy is set up to handle requests securely
+// and that the client-side code does not directly expose the API key. The GeminiClient should be
+// configured to communicate with the proxy instead of directly with the Gemini API.
