@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { app } from 'electron';
-import * as crypto from 'crypto';
+import * as bcrypt from 'bcrypt';
 import { UserProfile, ConversationHistory, Message, Achievement } from '../../shared/types';
 
 // Storage directory
@@ -66,15 +66,14 @@ export interface ConversationData {
 
 // Password hashing
 export function hashPassword(password: string): string {
-  const salt = crypto.randomBytes(16).toString('hex');
-  const hash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
-  return `${salt}:${hash}`;
+  // Use bcrypt to hash the password with a unique salt
+  const saltRounds = 12;
+  return bcrypt.hashSync(password, saltRounds);
 }
 
 export function verifyPassword(password: string, hash: string): boolean {
-  const [salt, originalHash] = hash.split(':');
-  const newHash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
-  return originalHash === newHash;
+  // Use bcrypt to verify the password against the hash
+  return bcrypt.compareSync(password, hash);
 }
 
 // User operations
@@ -284,4 +283,3 @@ export function getMessages(conversationId: string): Message[] {
     timestamp: typeof msg.timestamp === 'string' ? new Date(msg.timestamp) : msg.timestamp,
   }));
 }
-
