@@ -24,7 +24,14 @@ function readJsonFile<T>(filePath: string, defaultValue: T): T {
   try {
     if (fs.existsSync(filePath)) {
       const data = fs.readFileSync(filePath, 'utf-8');
-      return JSON.parse(data);
+      const parsedData = JSON.parse(data);
+
+      // Validate the structure of the parsed data
+      if (validateDataStructure(parsedData)) {
+        return parsedData;
+      } else {
+        console.error(`Invalid data structure in ${filePath}`);
+      }
     }
   } catch (error) {
     console.error(`Error reading ${filePath}:`, error);
@@ -39,6 +46,13 @@ function writeJsonFile<T>(filePath: string, data: T): void {
     console.error(`Error writing ${filePath}:`, error);
     throw error;
   }
+}
+
+// Validate the structure of the deserialized data
+function validateDataStructure(data: any): boolean {
+  // Implement specific validation logic based on expected data structure
+  // This is a placeholder function and should be customized
+  return true;
 }
 
 // User interface
@@ -284,4 +298,3 @@ export function getMessages(conversationId: string): Message[] {
     timestamp: typeof msg.timestamp === 'string' ? new Date(msg.timestamp) : msg.timestamp,
   }));
 }
-
