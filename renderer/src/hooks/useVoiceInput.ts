@@ -54,13 +54,6 @@ export const useVoiceInput = (): UseVoiceInputResult => {
       return;
     }
 
-    const apiKey = (process.env.GEMINI_API_KEY as string) || "";
-    if (!apiKey) {
-      setError("Gemini API key not configured");
-      alert("Gemini API key missing");
-      return;
-    }
-
     try {
       // MUTE TTS while listening to prevent feedback
       console.log("🔇 Muting TTS during voice input...");
@@ -135,7 +128,7 @@ export const useVoiceInput = (): UseVoiceInputResult => {
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
         stream.getTracks().forEach((track) => track.stop());
-        if (audioBlob.size > 0) await transcribeWithGemini(audioBlob, apiKey);
+        if (audioBlob.size > 0) await transcribeWithGemini(audioBlob);
 
         // UNMUTE TTS after recording
         console.log("🔊 Unmuting TTS after voice input...");
@@ -176,7 +169,7 @@ export const useVoiceInput = (): UseVoiceInputResult => {
     }
   }, [isListening]);
 
-  const transcribeWithGemini = async (audioBlob: Blob, apiKey: string) => {
+  const transcribeWithGemini = async (audioBlob: Blob) => {
     try {
       // Check audio blob size
       if (audioBlob.size < 100) {
@@ -204,8 +197,9 @@ export const useVoiceInput = (): UseVoiceInputResult => {
         base64Length: base64Data.length,
       });
 
+      // Use a server-side proxy to handle the API request
       const response = await axios.post(
-        `${API_ENDPOINTS.GEMINI}?key=${apiKey}`,
+        `${API_ENDPOINTS.GEMINI_PROXY}`,
         {
           contents: [
             {
@@ -630,22 +624,15 @@ export const useVoiceInput = (): UseVoiceInputResult => {
       return;
     }
 
-    const apiKey = (process.env.GEMINI_API_KEY as string) || "";
-    if (!apiKey) {
-      setError("Gemini API key not configured");
-      alert("Gemini API key missing");
-      return;
-    }
-
     setIsConversationalMode(true);
     conversationalModeRef.current = true;
     console.log("🎙️ Conversational mode started");
 
     // Start the continuous listening loop
-    listenContinuously(apiKey);
+    listenContinuously();
   }, [isSupported]);
 
-  const listenContinuously = async (apiKey: string) => {
+  const listenContinuously = async () => {
     while (conversationalModeRef.current) {
       try {
         // Half-duplex: wait for TTS from PREVIOUS cycle based on generated duration + 1s buffer
@@ -923,7 +910,7 @@ export const useVoiceInput = (): UseVoiceInputResult => {
             }
 
             if (audioBlob.size > 0 && conversationalModeRef.current) {
-              await transcribeWithGemini(audioBlob, apiKey);
+              await transcribeWithGemini(audioBlob);
             }
 
             // UNMUTE TTS so AI can respond
