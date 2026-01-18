@@ -24,12 +24,33 @@ function readJsonFile<T>(filePath: string, defaultValue: T): T {
   try {
     if (fs.existsSync(filePath)) {
       const data = fs.readFileSync(filePath, 'utf-8');
-      return JSON.parse(data);
+      const parsedData = JSON.parse(data);
+
+      // Validate the parsed data
+      if (validateJsonStructure(parsedData)) {
+        return parsedData;
+      } else {
+        console.error(`Invalid JSON structure in ${filePath}`);
+      }
     }
   } catch (error) {
     console.error(`Error reading ${filePath}:`, error);
   }
   return defaultValue;
+}
+
+function validateJsonStructure(data: any): boolean {
+  // Implement validation logic based on expected structure
+  // This is a basic example, adjust according to your data structure
+  if (Array.isArray(data.users)) {
+    return data.users.every(user => 
+      typeof user.id === 'string' &&
+      typeof user.username === 'string' &&
+      typeof user.passwordHash === 'string' &&
+      typeof user.created_at === 'number'
+    );
+  }
+  return false;
 }
 
 function writeJsonFile<T>(filePath: string, data: T): void {
@@ -284,4 +305,3 @@ export function getMessages(conversationId: string): Message[] {
     timestamp: typeof msg.timestamp === 'string' ? new Date(msg.timestamp) : msg.timestamp,
   }));
 }
-
