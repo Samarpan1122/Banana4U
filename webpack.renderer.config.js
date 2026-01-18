@@ -50,7 +50,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./renderer/public/index.html",
     }),
-    // Only inject vars we explicitly need; let webpack set NODE_ENV based on --mode to avoid conflicts.
     new webpack.DefinePlugin({
       global: "window",
       "process.env.GEMINI_API_KEY": JSON.stringify(
