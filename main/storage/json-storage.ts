@@ -24,12 +24,25 @@ function readJsonFile<T>(filePath: string, defaultValue: T): T {
   try {
     if (fs.existsSync(filePath)) {
       const data = fs.readFileSync(filePath, 'utf-8');
-      return JSON.parse(data);
+      const parsedData = JSON.parse(data);
+
+      // Validate and sanitize the parsed data
+      if (validateData(parsedData)) {
+        return parsedData;
+      } else {
+        console.warn(`Validation failed for data in ${filePath}. Returning default value.`);
+      }
     }
   } catch (error) {
     console.error(`Error reading ${filePath}:`, error);
   }
   return defaultValue;
+}
+
+function validateData(data: any): boolean {
+  // Implement validation logic based on expected data structure
+  // This is a placeholder function and should be replaced with actual validation logic
+  return true;
 }
 
 function writeJsonFile<T>(filePath: string, data: T): void {
@@ -284,4 +297,3 @@ export function getMessages(conversationId: string): Message[] {
     timestamp: typeof msg.timestamp === 'string' ? new Date(msg.timestamp) : msg.timestamp,
   }));
 }
-
