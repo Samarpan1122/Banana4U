@@ -152,6 +152,12 @@ export function setupIPCHandlers(mainWindow: BrowserWindow): void {
     IPC_CHANNELS.TTS_GENERATE_FILE,
     async (_event, text: string) => {
       try {
+        // Access control: Ensure user is authenticated
+        const currentUser = getCurrentUser();
+        if (!currentUser) {
+          throw new Error("Unauthorized access: User not authenticated");
+        }
+
         // Get API key from settings first, fall back to env
         const settings = store.get("settings") as any;
         const ELEVENLABS_API_KEY = settings?.elevenLabsApiKey || process.env.ELEVENLABS_API_KEY;
@@ -231,11 +237,23 @@ export function setupIPCHandlers(mainWindow: BrowserWindow): void {
     IPC_CHANNELS.TTS_PLAY_FILE,
     async (_event, filePath: string) => {
       try {
+        // Access control: Ensure user is authenticated
+        const currentUser = getCurrentUser();
+        if (!currentUser) {
+          throw new Error("Unauthorized access: User not authenticated");
+        }
+
         if (process.platform !== "darwin") {
           throw new Error(
             "TTS playback via afplay is only implemented on macOS"
           );
         }
+
+        // Validate and sanitize filePath
+        if (!path.isAbsolute(filePath) || path.extname(filePath) !== '.mp3') {
+          throw new Error("Invalid file path");
+        }
+
         console.log(
           "▶️  [Main Process] Playing audio file with afplay:",
           filePath
