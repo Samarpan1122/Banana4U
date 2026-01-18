@@ -19,12 +19,42 @@ const getUsersFile = (): string => path.join(getStorageDir(), 'users.json');
 const getProfilesFile = (): string => path.join(getStorageDir(), 'profiles.json');
 const getConversationsFile = (): string => path.join(getStorageDir(), 'conversations.json');
 
+// Encryption key for sensitive data
+const ENCRYPTION_KEY = crypto.randomBytes(32); // Use a secure method to store and retrieve this key
+const IV_LENGTH = 16;
+
 // Helper functions
+function encrypt(text: string): string {
+  const iv = crypto.randomBytes(IV_LENGTH);
+  const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv);
+  let encrypted = cipher.update(text);
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return iv.toString('hex') + ':' + encrypted.toString('hex');
+}
+
+function decrypt(text: string): string {
+  const textParts = text.split(':');
+  const iv = Buffer.from(textParts.shift()!, 'hex');
+  const encryptedText = Buffer.from(textParts.join(':'), 'hex');
+  const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv);
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
+}
+
 function readJsonFile<T>(filePath: string, defaultValue: T): T {
   try {
     if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, 'utf-8');
-      return JSON.parse(data);
+      const encryptedData = fs.readFileSync(filePath, 'utf-8');
+      const data = decrypt(encryptedData);
+      const parsedData = JSON.parse(data);
+
+      // Validate the structure of the parsed JSON data
+      if (validateJsonStructure(parsedData)) {
+        return parsedData;
+      } else {
+        throw new Error('Invalid JSON structure');
+      }
     }
   } catch (error) {
     console.error(`Error reading ${filePath}:`, error);
@@ -34,11 +64,20 @@ function readJsonFile<T>(filePath: string, defaultValue: T): T {
 
 function writeJsonFile<T>(filePath: string, data: T): void {
   try {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    const jsonData = JSON.stringify(data, null, 2);
+    const encryptedData = encrypt(jsonData);
+    fs.writeFileSync(filePath, encryptedData, 'utf-8');
   } catch (error) {
     console.error(`Error writing ${filePath}:`, error);
     throw error;
   }
+}
+
+// Validate JSON structure
+function validateJsonStructure(data: any): boolean {
+  // Implement specific validation logic based on expected data structure
+  // Example: Check if data has required properties
+  return data && typeof data === 'object' && 'users' in data;
 }
 
 // User interface
@@ -284,4 +323,3 @@ export function getMessages(conversationId: string): Message[] {
     timestamp: typeof msg.timestamp === 'string' ? new Date(msg.timestamp) : msg.timestamp,
   }));
 }
-
