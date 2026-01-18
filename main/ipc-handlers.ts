@@ -249,7 +249,10 @@ export function setupIPCHandlers(mainWindow: BrowserWindow): void {
         }
 
         await new Promise<void>((resolve, reject) => {
-          currentTTSProc = spawn("afplay", [filePath]);
+          currentTTSProc = spawn("afplay", [filePath], {
+            shell: false, // Ensure no shell is used
+            stdio: "ignore", // Ignore stdio to prevent unexpected behavior
+          });
           currentTTSProc.on("error", (err) => {
             currentTTSProc = null;
             reject(err);
@@ -298,7 +301,10 @@ export function setupIPCHandlers(mainWindow: BrowserWindow): void {
         // Stop existing playback if any
         stopAnyTTS();
         await new Promise<void>((resolve, reject) => {
-          currentTTSProc = spawn("afplay", [filePath]);
+          currentTTSProc = spawn("afplay", [filePath], {
+            shell: false, // Ensure no shell is used
+            stdio: "ignore", // Ignore stdio to prevent unexpected behavior
+          });
           currentTTSProc.on("error", (err) => {
             console.error("❌ [Main Process] afplay error:", err);
             currentTTSProc = null;
