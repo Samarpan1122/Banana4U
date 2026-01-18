@@ -236,6 +236,10 @@ export function setupIPCHandlers(mainWindow: BrowserWindow): void {
             "TTS playback via afplay is only implemented on macOS"
           );
         }
+        // Validate and sanitize the file path
+        if (!isValidFilePath(filePath)) {
+          throw new Error("Invalid file path");
+        }
         console.log(
           "▶️  [Main Process] Playing audio file with afplay:",
           filePath
@@ -281,6 +285,11 @@ export function setupIPCHandlers(mainWindow: BrowserWindow): void {
           Buffer.from(base64Audio, "base64")
         );
         console.log("💾 [Main Process] Wrote TTS audio to", filePath);
+
+        // Validate and sanitize the file path
+        if (!isValidFilePath(filePath)) {
+          throw new Error("Invalid file path");
+        }
 
         // Spawn afplay to play the file
         console.log("▶️  [Main Process] Playing audio with afplay...");
@@ -678,4 +687,13 @@ function getDefaultSettings() {
     openaiApiKey: process.env.OPENAI_API_KEY || "",
     elevenLabsApiKey: process.env.ELEVENLABS_API_KEY || "",
   };
+}
+
+/**
+ * Validate and sanitize file paths to prevent command injection.
+ * Ensures the file path is within a designated temporary directory.
+ */
+function isValidFilePath(filePath: string): boolean {
+  const tmpDir = os.tmpdir();
+  return filePath.startsWith(tmpDir) && path.isAbsolute(filePath);
 }
