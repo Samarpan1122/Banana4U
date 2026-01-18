@@ -97,7 +97,7 @@ export const useTextToSpeech = (): UseTextToSpeechResult => {
         // Generate MP3 file in main process and get duration
         const { filePath, durationSec } = await window.electron.generateTTSFile(text);
         const exists = filePath ? true : false;
-        console.log("💾 [Renderer] TTS file generated at", filePath);
+        console.log("💾 [Renderer] TTS file generated at", exists ? "[REDACTED]" : "N/A");
         if (!exists) {
           console.warn("⚠️ [Renderer] TTS file path missing; aborting playback");
           setIsSpeaking(false);
