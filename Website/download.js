@@ -3,10 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const cursor = document.querySelector(".cursor-dot");
   const cursorOutline = document.querySelector(".cursor-outline");
 
-  let mouseX = 0,
-    mouseY = 0;
-  let outlineX = 0,
-    outlineY = 0;
+  let mouseX = 0, mouseY = 0;
+  let outlineX = 0, outlineY = 0;
 
   document.addEventListener("mousemove", (e) => {
     mouseX = e.clientX;
@@ -71,8 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
       this.x += this.vx;
       this.y += this.vy;
 
-      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      if (this.x < 0 || this.x > canvas.width) {
+        this.vx *= -1;
+      }
+      if (this.y < 0 || this.y > canvas.height) {
+        this.vy *= -1;
+      }
     }
 
     draw() {
@@ -88,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         0,
         this.x,
         this.y,
-        this.radius * 3,
+        this.radius * 3
       );
       gradient.addColorStop(0, `rgba(255, 214, 10, ${this.opacity * 0.3})`);
       gradient.addColorStop(1, "rgba(255, 214, 10, 0)");
@@ -137,17 +139,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Download URLs from Google Drive
   const downloadLinks = {
-    windows:
-      "https://drive.google.com/file/d/1acr3ozBq2ZYpG4PSaeFpX3VsZvWu5HLm/view?usp=sharing",
-    macos:
-      "https://drive.google.com/file/d/1QnER_9NROoIXcteSOpc0PctABZ0776_h/view?usp=sharing",
-    macosSilicon:
-      "https://drive.google.com/file/d/1fGLXjGd-PBgBb3-WVYdF7al4h7pIxjRc/view?usp=sharing",
+    windows: "https://drive.google.com/file/d/1acr3ozBq2ZYpG4PSaeFpX3VsZvWu5HLm/view?usp=sharing",
+    macos: "https://drive.google.com/file/d/1QnER_9NROoIXcteSOpc0PctABZ0776_h/view?usp=sharing",
+    macosSilicon: "https://drive.google.com/file/d/1fGLXjGd-PBgBb3-WVYdF7al4h7pIxjRc/view?usp=sharing"
   };
 
-  if (windowsButton) windowsButton.href = downloadLinks.windows;
-  if (macosButton) macosButton.href = downloadLinks.macos;
-  if (macosSiliconButton) macosSiliconButton.href = downloadLinks.macosSilicon;
+  if (windowsButton) {
+    windowsButton.href = downloadLinks.windows;
+  }
+  if (macosButton) {
+    macosButton.href = downloadLinks.macos;
+  }
+  if (macosSiliconButton) {
+    macosSiliconButton.href = downloadLinks.macosSilicon;
+  }
 
   if (userAgent.includes("win")) {
     windowsButton?.classList.add("recommended");
@@ -184,21 +189,29 @@ document.addEventListener("DOMContentLoaded", () => {
       screenshots.forEach((img, i) => {
         img.classList.toggle("active", i === index);
       });
-      if (prevButton) prevButton.disabled = index === 0;
-      if (nextButton) nextButton.disabled = index === screenshots.length - 1;
+      if (prevButton) {
+        prevButton.disabled = index === 0;
+      }
+      if (nextButton) {
+        nextButton.disabled = index === screenshots.length - 1;
+      }
     };
 
     prevButton?.addEventListener("click", () => {
       if (currentIndex > 0) {
         currentIndex--;
-        if (showScreenshot) showScreenshot(currentIndex);
+        if (showScreenshot) {
+          showScreenshot(currentIndex);
+        }
       }
     });
 
     nextButton?.addEventListener("click", () => {
       if (currentIndex < screenshots.length - 1) {
         currentIndex++;
-        if (showScreenshot) showScreenshot(currentIndex);
+        if (showScreenshot) {
+          showScreenshot(currentIndex);
+        }
       }
     });
 
@@ -221,8 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     card.addEventListener("mouseleave", () => {
-      card.style.transform =
-        "perspective(1000px) rotateX(0) rotateY(0) scale(1)";
+      card.style.transform = "perspective(1000px) rotateX(0) rotateY(0) scale(1)";
     });
   });
 
@@ -242,8 +254,8 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         rootMargin: "0px",
-        threshold: 0.1, // Trigger when 10% of the element is visible
-      },
+        threshold: 0.1 // Trigger when 10% of the element is visible
+      }
     );
 
     animatedElements.forEach((el) => {
@@ -259,7 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "hero-section": "bg-hero",
     "features-section": "bg-features",
     "personalities-section": "bg-personalities",
-    "screenshots-section": "bg-screenshots",
+    "screenshots-section": "bg-screenshots"
   };
 
   const backgroundObserver = new IntersectionObserver(
@@ -269,16 +281,13 @@ document.addEventListener("DOMContentLoaded", () => {
           const sectionId = entry.target.id;
           const newClass = sections[sectionId];
           if (newClass) {
-            document.body.className = document.body.className.replace(
-              /bg-\w+/g,
-              "",
-            );
+            document.body.className = document.body.className.replace(/bg-\w+/g, "");
             document.body.classList.add(newClass);
           }
         }
       });
     },
-    { threshold: 0.2, rootMargin: "-40% 0px -40% 0px" },
+    { threshold: 0.2, rootMargin: "-40% 0px -40% 0px" }
   );
 
   document.querySelectorAll("section[id]").forEach((section) => {
@@ -322,8 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     heroBanana.addEventListener("mouseleave", () => {
-      heroBanana.style.transform =
-        "perspective(1000px) rotateX(0) rotateY(0) scale(1)";
+      heroBanana.style.transform = "perspective(1000px) rotateX(0) rotateY(0) scale(1)";
     });
   }
 });
