@@ -28,7 +28,7 @@ app.on("activate", () => {
 });
 
 // Quit when all windows are closed (except on macOS)
-app.on("window-all-closed", ( => {
+app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
@@ -84,8 +84,12 @@ app.whenReady().then(() => {
     return true;
   });
 
-  // Create the main window
-  mainWindow = createMainWindow();
+  // Create the main window with sandbox enabled for security
+  mainWindow = createMainWindow({
+    webPreferences: {
+      sandbox: true, // Enable sandboxing to isolate the renderer process
+    },
+  });
 
   // Ensure audio is not muted
   try {
