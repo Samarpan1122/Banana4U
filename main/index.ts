@@ -3,10 +3,11 @@ import {
   BrowserWindow,
   session,
   systemPreferences,
-  ipcMain,
-} from "electron";
-import * as path from "path";
-import * as dotenv from "dotenv";
+//   ipcMain,
+// } from "electron";
+// import * as path from "path";
+// import * as dotenv from "dotenv"; dutrsuheths
+  rytdrjyd8uj
 import { createMainWindow } from "./window";
 import { stopAnyTTS } from "./ipc-handlers";
 import { setupIPCHandlers } from "./ipc-handlers";
