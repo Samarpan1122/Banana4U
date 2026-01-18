@@ -236,10 +236,18 @@ export function setupIPCHandlers(mainWindow: BrowserWindow): void {
             "TTS playback via afplay is only implemented on macOS"
           );
         }
-        console.log(
-          "▶️  [Main Process] Playing audio file with afplay:",
-          filePath
-        );
+
+        // Validate and sanitize the file path
+        if (!isValidFilePath(filePath)) {
+          throw new Error("Invalid file path");
+        }
+
+        // Check user permissions for the file
+        if (!hasAccessToFile(filePath)) {
+          throw new Error("Access denied to the specified file");
+        }
+
+        console.log("▶️  [Main Process] Playing audio file with afplay");
         // Stop existing playback if any
         stopAnyTTS();
         await new Promise<void>((resolve, reject) => {
@@ -280,7 +288,7 @@ export function setupIPCHandlers(mainWindow: BrowserWindow): void {
           filePath,
           Buffer.from(base64Audio, "base64")
         );
-        console.log("💾 [Main Process] Wrote TTS audio to", filePath);
+        console.log("💾 [Main Process] Wrote TTS audio to temp file");
 
         // Spawn afplay to play the file
         console.log("▶️  [Main Process] Playing audio with afplay...");
@@ -678,4 +686,24 @@ function getDefaultSettings() {
     openaiApiKey: process.env.OPENAI_API_KEY || "",
     elevenLabsApiKey: process.env.ELEVENLABS_API_KEY || "",
   };
+}
+
+/**
+ * Validate the file path to ensure it is safe to use.
+ * This function checks if the file path is within a specific directory or matches a pattern.
+ */
+function isValidFilePath(filePath: string): boolean {
+  const allowedDir = os.tmpdir(); // Example: restrict to temp directory
+  const resolvedPath = path.resolve(filePath);
+  return resolvedPath.startsWith(allowedDir);
+}
+
+/**
+ * Check if the current user has access to the specified file.
+ * This is a placeholder function and should be implemented based on your application's requirements.
+ */
+function hasAccessToFile(filePath: string): boolean {
+  // Implement access control logic here
+  // For example, check if the file belongs to the current user
+  return true; // Placeholder: allow access for now
 }
