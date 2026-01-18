@@ -95,6 +95,7 @@ export const useTextToSpeech = (): UseTextToSpeechResult => {
         }
 
         // Generate MP3 file in main process and get duration
+        // Use a server-side proxy to handle API requests securely
         const { filePath, durationSec } = await window.electron.generateTTSFile(text);
         const exists = filePath ? true : false;
         console.log("💾 [Renderer] TTS file generated at", filePath);
