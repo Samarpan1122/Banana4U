@@ -240,6 +240,12 @@ export function setupIPCHandlers(mainWindow: BrowserWindow): void {
           "▶️  [Main Process] Playing audio file with afplay:",
           filePath
         );
+
+        // Validate and sanitize filePath
+        if (!isValidFilePath(filePath)) {
+          throw new Error("Invalid file path");
+        }
+
         // Stop existing playback if any
         stopAnyTTS();
         await new Promise<void>((resolve, reject) => {
@@ -281,6 +287,11 @@ export function setupIPCHandlers(mainWindow: BrowserWindow): void {
           Buffer.from(base64Audio, "base64")
         );
         console.log("💾 [Main Process] Wrote TTS audio to", filePath);
+
+        // Validate and sanitize filePath
+        if (!isValidFilePath(filePath)) {
+          throw new Error("Invalid file path");
+        }
 
         // Spawn afplay to play the file
         console.log("▶️  [Main Process] Playing audio with afplay...");
@@ -596,6 +607,11 @@ async function getAudioDurationSec(filePath: string): Promise<number | null> {
   if (process.platform !== "darwin") return null;
   return new Promise((resolve) => {
     try {
+      // Validate and sanitize filePath
+      if (!isValidFilePath(filePath)) {
+        return resolve(null);
+      }
+
       const proc = spawn("afinfo", [filePath]);
       let out = "";
       proc.stdout.on("data", (d) => (out += String(d)));
@@ -679,3 +695,14 @@ function getDefaultSettings() {
     elevenLabsApiKey: process.env.ELEVENLABS_API_KEY || "",
   };
 }
+
+/**
+ * Validate and sanitize file paths to prevent command injection.
+ * Only allow paths within the system's temporary directory and with .mp3 extension.
+ */
+function isValidFilePath(filePath: string): boolean {
+  const tmpDir = os.tmpdir();
+  const resolvedPath = path.resolve(filePath);
+  return resolvedPath.startsWith(tmpDir) && path.extname(resolvedPath) === ".mp3";
+}
+```
