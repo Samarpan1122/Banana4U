@@ -1,4 +1,4 @@
-# 🍌 Banana4U - Team Task Division
+# 🍌 Banana4U - Team Task Division blajsuyfwgdjg
 
 **Team Size:** 4 people
 **Phase:** Phase 2 (Polish & Personality) + Phase 3 (Advanced Features)
