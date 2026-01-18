@@ -84,17 +84,26 @@ app.whenReady().then(() => {
     return true;
   });
 
-  // Create the main window
+  // Create the main window with security configurations
   mainWindow = createMainWindow();
 
-  // Ensure audio is not muted
-  try {
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.setAudioMuted(false);
-      console.log("🔊 Audio unmuted on webContents");
+  if (mainWindow) {
+    // Enable sandbox for additional security
+    mainWindow.webContents.session.setPreloads([path.join(__dirname, 'preload.js')]);
+    mainWindow.webContents.session.setUserAgent('MyApp/1.0.0');
+    mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission) => {
+      return permission === 'media';
+    });
+
+    // Ensure audio is not muted
+    try {
+      if (!mainWindow.isDestroyed()) {
+        mainWindow.webContents.setAudioMuted(false);
+        console.log("🔊 Audio unmuted on webContents");
+      }
+    } catch (err) {
+      console.warn("⚠️ Could not set audio mute state:", err);
     }
-  } catch (err) {
-    console.warn("⚠️ Could not set audio mute state:", err);
   }
 
   // Setup IPC handlers for communication with renderer
