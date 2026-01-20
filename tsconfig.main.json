@@ -10,3 +10,4 @@
   "include": ["main/**/*", "shared/**/*", "preload/**/*"],
   "exclude": ["node_modules", "renderer", "dist", "release"]
 }
+```
