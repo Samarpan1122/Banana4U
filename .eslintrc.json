@@ -5,7 +5,7 @@
     "node": true
   },
   "extends": [
-    "eslint:recommended",
+    "eslint:recommended", gfjhgjmgmfmjf
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended"
